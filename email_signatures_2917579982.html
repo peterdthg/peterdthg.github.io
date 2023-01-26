@@ -12,14 +12,180 @@ body {
 
 .container {
   position: absolute;
-  top: 100px;
+  top: 440px;
   left: 100px;
+}
+
+.container-maker {
+  padding: 20px 0 0 100px;
+}
+
+.container-maker h2 {
+  font-family: Arial;
+  color: #fff;
+}
+
+.container-maker input {
+  padding: 10px;
+  width: 200px;
+}
+
+.container-maker button {
+  padding: 10px;
+  border: 0;
+  background-color: #004000;
+  color: #fff;
+}
+
+.container-maker button:hover {
+  background-color: #007400;
+}
+
+.container-maker button:active {
+  background-color: #004000;
 }
 
 </style>
 
-<div class="container">
+<script>
 
+  function populate(value,id) {
+    
+    //console.log( value + ' - ' + id)
+    
+    if ( id == "email" ) {
+      document.getElementById(id).innerHTML = value;
+      document.getElementById(id).href = 'mailto:' + value;
+      document.getElementById(id).title = 'mailto:' + value;
+    } else if ( id == "meeting" && value == "-" ) {
+      document.getElementById('invite').style.display = 'none';
+    } else if ( id == "meeting" && value != "-" ) {
+      document.getElementById('invite').style.display = 'block';
+      document.getElementById(id).href = value;
+    } else if ( id == "number" ) {
+      document.getElementById(id).innerHTML = value;
+      document.getElementById(id).href = 'tel:' + value.replace('+', '00').replace(/\s/g, '');
+    } else {
+      document.getElementById(id).innerHTML = value;
+    }
+    
+    document.getElementById('txtcopy').value = document.getElementById('copySig').innerHTML;
+
+  }
+  
+  function phoneNumber(pnumber) {
+      return pnumber.replace(/\s+/g, "").replace(/^(\+\d{2})(\d{4})(\d{3})(\d{4})$/, "$1 $2 $3 $4");
+  }
+  
+  function selectText(containerid) {
+      if (document.selection) { // IE
+          var range = document.body.createTextRange();
+          range.moveToElementText(document.getElementById(containerid));
+          range.select();
+      } else if (window.getSelection) {
+          var range = document.createRange();
+          range.selectNode(document.getElementById(containerid));
+          window.getSelection().removeAllRanges();
+          window.getSelection().addRange(range);
+      }
+  }
+  
+  function copyDivToClipboard(containerid) {
+      var range = document.createRange();
+      range.selectNode(document.getElementById(containerid));
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
+  }
+
+</script>
+
+<div class="container-maker">
+  
+  <h2>Manual generator</h2>
+  
+  <input type="text" placeholder="Full Name" onkeyup="populate(this.value, 'name')" />
+  <input type="text" placeholder="Position" onkeyup="populate(this.value, 'position')" />
+  <input type="tel" placeholder="Email Address" onkeyup="populate(this.value, 'email')" /><br /><br />
+  <input type="tel" placeholder="Phone Number (0044..)" onkeyup="populate(this.value, 'number')" />
+  <input type="tel" placeholder="Meeting Link" onkeyup="populate(this.value, 'meeting')" />
+  <br /><br /><button onclick="copyDivToClipboard('copySig')">Copy signature to clipboard (HTML)</button> &nbsp; <button onclick="copyDivToClipboard('txtcopy')">Copy signature to clipboard (TXT)</button>
+  
+  <br />
+  
+  <div id="copySig">
+    
+    <br / >
+    
+    <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+      
+      <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" id="name">Full Name</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;" id="position">Position</p>
+        </td>
+        
+        <td style="text-align: right;">
+          <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+            <img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rnr6y/702873/16744789788RDiWlcG/logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+          </a>
+        </td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rnr6v/702873/1674478978j0HHaivg/dashed_line_b.png" style="padding: 10px 0 0 0; width: 480px;" alt="" /></td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+      <td>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a id="email" href="mailto:your.email@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">your.email@thehutgroup.com</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a id="number" href="tel:" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 123 4567</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
+      </td>
+      
+      <td style="text-align: right;">
+      
+        <p id="invite">
+          <a href="https://bit.ly/3WSbWFj" target="_blank" id="meeting">
+            <img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rp16c/702873/1674483949sDuacnQk/schedula_a_meeting_b.png" style="padding: 5px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+          </a>
+        </p>
+        
+        <p style="padding: 5px 0 0 0;">
+          <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rnpsy/702873/1674471270FPC33BBj/social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+          <a href="https://twitter.com/THG_ICS" target="_blank"><img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rnpt2/702873/1674471270rtCbCTgr/social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+          <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rnrcc/702873/1674479244unrZ3rsN/social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+        </p>
+      
+      </td>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="https://info.ingenuitycloudservices.com/l/702873/2023-01-23/rnr6v/702873/1674478978j0HHaivg/dashed_line_b.png" style="width: 480px;" alt="" /></td>
+      
+      </tr>
+      
+    </tr>
+    
+    </table>
+    
+    <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 660px;" id="txtcopy"></textarea>
+  
+  </div>
+
+</div>
+
+<div class="container">
+  
+  <hr /><br />
+  
   <!-- ------------------------------------------------------------------------------- Marcus Conroy ------------------------------------------------------------------------------- -->
 
   <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
