@@ -1,136 +1,279 @@
-<style>
-
-html, body {
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  background-color: #161923;
-}
-
-.container {
-  position: absolute;
-  top: 440px;
-  left: 100px;
-}
-
-.container-maker {
-  padding: 20px 0 0 100px;
-}
-
-.container-maker h2 {
-  font-family: Arial;
-  color: #fff;
-}
-
-.container-maker input {
-  padding: 10px;
-  width: 200px;
-}
-
-.container-maker button {
-  padding: 10px;
-  border: 0;
-  background-color: #004000;
-  color: #fff;
-}
-
-.container-maker button:hover {
-  background-color: #007400;
-}
-
-.container-maker button:active {
-  background-color: #004000;
-}
-
-</style>
-
-<script>
-
-  function populate(value,id) {
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Manual signature generator</title>
     
-    //console.log( value + ' - ' + id)
-    
-    if ( id == "email" ) {
-      document.getElementById(id).innerHTML = value;
-      document.getElementById(id).href = 'mailto:' + value;
-    } else if ( id == "meeting" && value == "-" ) {
-      document.getElementById('invite').style.display = 'none';
-    } else if ( id == "meeting" && value != "-" ) {
-      document.getElementById('invite').style.display = 'block';
-      document.getElementById(id).href = value;
-    } else if ( id == "number" && value == "-" ) {
-      document.getElementById(id).style.display = 'none';
-    } else if ( id == "number" ) {
-      document.getElementById(id).innerHTML = value;
-      document.getElementById(id).href = 'tel:' + value.replace('+', '00').replace(/\s/g, '');
-    } else {
-      document.getElementById(id).innerHTML = value;
+    <base href="https://peterdthg.github.io/">
+
+    <style>
+
+    html, body {
+      height: 100%;
+      padding: 0;
+      margin: 0;
     }
-    
-    document.getElementById('txtcopy').value = document.getElementById('copySig').innerHTML;
 
-  }
-  
-  function phoneNumber(pnumber) {
-      return pnumber.replace(/\s+/g, "").replace(/^(\+\d{2})(\d{4})(\d{3})(\d{4})$/, "$1 $2 $3 $4");
-  }
-  
-  function selectText(containerid) {
-      if (document.selection) { // IE
-          var range = document.body.createTextRange();
-          range.moveToElementText(document.getElementById(containerid));
-          range.select();
-      } else if (window.getSelection) {
+    body {
+      background-color: #161923;
+    }
+
+    .container {
+      position: absolute;
+      top: 440px;
+      left: 100px;
+    }
+
+    .container-maker {
+      padding: 20px 0 0 100px;
+    }
+
+    .container-maker h2 {
+      font-family: Arial;
+      color: #fff;
+    }
+
+    .container-maker input {
+      padding: 10px;
+      width: 200px;
+    }
+
+    .container-maker button {
+      padding: 10px;
+      border: 0;
+      background-color: #004000;
+      color: #fff;
+    }
+
+    .container-maker button:hover {
+      background-color: #007400;
+    }
+
+    .container-maker button:active {
+      background-color: #004000;
+    }
+
+    </style>
+
+    <script>
+
+      function populate(value,id) {
+        
+        //console.log( value + ' - ' + id)
+        
+        if ( id == "email" ) {
+          document.getElementById(id).innerHTML = value;
+          document.getElementById(id).href = 'mailto:' + value;
+        } else if ( id == "meeting" && value == "-" ) {
+          document.getElementById('invite').style.display = 'none';
+        } else if ( id == "meeting" && value != "-" ) {
+          document.getElementById('invite').style.display = 'block';
+          document.getElementById(id).href = value;
+        } else if ( id == "number" && value == "-" ) {
+          document.getElementById(id).style.display = 'none';
+        } else if ( id == "number" ) {
+          document.getElementById(id).innerHTML = value;
+          document.getElementById(id).href = 'tel:' + value.replace('+', '00').replace(/\s/g, '');
+        } else {
+          document.getElementById(id).innerHTML = value;
+        }
+        
+        document.getElementById('txtcopy').value = document.getElementById('copySig').innerHTML;
+
+      }
+      
+      function phoneNumber(pnumber) {
+          return pnumber.replace(/\s+/g, "").replace(/^(\+\d{2})(\d{4})(\d{3})(\d{4})$/, "$1 $2 $3 $4");
+      }
+      
+      function selectText(containerid) {
+          if (document.selection) { // IE
+              var range = document.body.createTextRange();
+              range.moveToElementText(document.getElementById(containerid));
+              range.select();
+          } else if (window.getSelection) {
+              var range = document.createRange();
+              range.selectNode(document.getElementById(containerid));
+              window.getSelection().removeAllRanges();
+              window.getSelection().addRange(range);
+          }
+      }
+      
+      function copyDivToClipboard(containerid) {
           var range = document.createRange();
           range.selectNode(document.getElementById(containerid));
           window.getSelection().removeAllRanges();
           window.getSelection().addRange(range);
+          document.execCommand("copy");
+          window.getSelection().removeAllRanges();
       }
-  }
-  
-  function copyDivToClipboard(containerid) {
-      var range = document.createRange();
-      range.selectNode(document.getElementById(containerid));
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-      document.execCommand("copy");
-      window.getSelection().removeAllRanges();
-  }
 
-</script>
+    </script>
 
-<div class="container-maker">
-  
-  <h2>Manual generator</h2>
-  
-  <input type="text" placeholder="Full Name" onkeyup="populate(this.value, 'name')" />
-  <input type="text" placeholder="Position" onkeyup="populate(this.value, 'position')" />
-  <input type="tel" placeholder="Email Address" onkeyup="populate(this.value, 'email')" /><br /><br />
-  <input type="tel" placeholder="Phone Number (0044..)" onkeyup="populate(this.value, 'number')" />
-  <input type="tel" placeholder="Meeting Link" onkeyup="populate(this.value, 'meeting')" />
-  <br /><br /><button onclick="copyDivToClipboard('copySig')">Copy signature to clipboard (HTML)</button> &nbsp; <button onclick="copyDivToClipboard('txtcopy')">Copy signature to clipboard (TXT)</button>
-  
-  <br />
-  
-  <div id="copySig">
-    
-    <br / >
-    
+  </head>
+  <body>
+
+    <div class="container-maker">
+      
+      <h2>Manual signature generator</h2>
+      
+      <input type="text" placeholder="Full Name" onkeyup="populate(this.value, 'name')" />
+      <input type="text" placeholder="Position" onkeyup="populate(this.value, 'position')" />
+      <input type="tel" placeholder="Email Address" onkeyup="populate(this.value, 'email')" /><br /><br />
+      <input type="tel" placeholder="Phone Number (0044..)" onkeyup="populate(this.value, 'number')" />
+      <input type="tel" placeholder="Meeting Link" onkeyup="populate(this.value, 'meeting')" />
+      <br /><br /><button onclick="copyDivToClipboard('copySig')">Copy signature to clipboard (HTML)</button> &nbsp; <button onclick="copyDivToClipboard('txtcopy')">Copy signature to clipboard (TXT)</button>
+      
+      <br />
+      
+      <div id="copySig">
+        
+        <br / >
+        
+        <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+          
+          <tr style="padding: 0; margin: 0;">
+            
+            <td>
+              <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" id="name">Full Name</p>
+              <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;" id="position">Position</p>
+            </td>
+            
+            <td style="text-align: right;">
+              <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+                <img src="./logo-b.png" height="15" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+              </a>
+            </td>
+          
+          </tr>
+          
+          <tr style="padding: 0; margin: 0;">
+          
+            <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+          
+          </tr>
+          
+          <tr style="padding: 0; margin: 0;">
+          
+          <td>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a id="email" href="mailto:your.email@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">your.email@thehutgroup.com</a></p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a id="number" href="tel:" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 123 4567</a></p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
+          </td>
+          
+          <td style="text-align: right;">
+          
+            <p id="invite">
+              <a href="https://bit.ly/3WSbWFj" target="_blank" id="meeting">
+                <img src="./schedula-a-meeting-b.png" height="24" style="padding: 5px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+              </a>
+            </p>
+            
+            <p style="padding: 5px 0 0 0;">
+              <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="./social-in.png" height="24" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+              <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" height="24" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+              <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" height="24" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+            </p>
+          
+          </td>
+          
+          <tr style="padding: 0; margin: 0;">
+          
+            <td colspan="2"><img src="./dashed-line-b.png" height="1" style="width: 480px;" alt="" /></td>
+          
+          </tr>
+          
+        </tr>
+        
+        </table>
+        
+        <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 660px;" id="txtcopy"></textarea>
+      
+      </div>
+
+    </div>
+
+    <div class="container">
+      
+      <hr /><br />
+      
+      <!-- ------------------------------------------------------------------------------- Marcus Conroy ------------------------------------------------------------------------------- -- >
+
+      <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+        
+        <tr style="padding: 0; margin: 0;">
+          
+          <td>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Marcus Conroy</p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Lead</p>
+          </td>
+          
+          <td style="text-align: right;">
+            <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+              <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+            </a>
+          </td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:marcus.conroy@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">marcus.conroy@thehutgroup.com</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241763" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1763</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
+        </td>
+        
+        <td style="text-align: right;">
+        
+          <p>
+            <a href="https://bit.ly/3WSbWFj" target="_blank">
+              <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+            </a>
+          </p>
+          
+          <p>
+            <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+            <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+            <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+          </p>
+        
+        </td>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+      </tr>
+      
+      </table>
+      
+      <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
     <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
       
       <tr style="padding: 0; margin: 0;">
         
         <td>
-          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" id="name">Full Name</p>
-          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;" id="position">Position</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Marcus Conroy</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Lead</p>
         </td>
         
         <td style="text-align: right;">
           <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-            <img src="logo_b.png" height="15" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+            <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
           </a>
         </td>
       
@@ -138,539 +281,415 @@ body {
       
       <tr style="padding: 0; margin: 0;">
       
-        <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+        <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
       
       </tr>
       
       <tr style="padding: 0; margin: 0;">
       
       <td>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a id="email" href="mailto:your.email@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">your.email@thehutgroup.com</a></p>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a id="number" href="tel:" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 123 4567</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:marcus.conroy@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">marcus.conroy@thehutgroup.com</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241763" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1763</a></p>
         <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
         <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
       </td>
       
       <td style="text-align: right;">
       
-        <p id="invite">
-          <a href="https://bit.ly/3WSbWFj" target="_blank" id="meeting">
-            <img src="schedula_a_meeting_b.png" height="24" style="padding: 5px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+        <p>
+          <a href="https://bit.ly/3WSbWFj" target="_blank">
+            <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
           </a>
         </p>
         
-        <p style="padding: 5px 0 0 0;">
-          <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" height="24" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-          <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" height="24" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-          <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" height="24" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+        <p>
+          <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+          <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+          <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
         </p>
       
       </td>
       
       <tr style="padding: 0; margin: 0;">
       
-        <td colspan="2"><img src="dashed_line_b.png" height="1" style="width: 480px;" alt="" /></td>
+        <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
       
       </tr>
       
     </tr>
-    
+
     </table>
-    
-    <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 660px;" id="txtcopy"></textarea>
-  
-  </div>
-
-</div>
-
-<div class="container">
-  
-  <hr /><br />
-  
-  <!-- ------------------------------------------------------------------------------- Marcus Conroy ------------------------------------------------------------------------------- -->
-
-  <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-    
-    <tr style="padding: 0; margin: 0;">
+      </textarea>
+      
+      <br /><br />
+      
+      <!-- ------------------------------------------------------------------------------- Stevie Howlett ------------------------------------------------------------------------------- -- >
+      
+      <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+        
+        <tr style="padding: 0; margin: 0;">
+          
+          <td>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Stevie Howlett</p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Director of Demand Generation</p>
+          </td>
+          
+          <td style="text-align: right;">
+            <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+              <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+            </a>
+          </td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:stevie.howlett@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">stevie.howlett@thehutgroup.com</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402039620459" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0203 962 0459</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
+        </td>
+        
+        <td style="text-align: right;">
+        
+          <p>
+            <a href="http://bit.ly/3iJNTJP" target="_blank">
+              <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+            </a>
+          </p>
+          
+          <p>
+            <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+            <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+            <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+          </p>
+        
+        </td>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+      </tr>
+      
+      </table>
+      
+      <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
+    <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+      
+      <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Stevie Howlett</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Director of Demand Generation</p>
+        </td>
+        
+        <td style="text-align: right;">
+          <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+            <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+          </a>
+        </td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
       
       <td>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Marcus Conroy</p>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Lead</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:stevie.howlett@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">stevie.howlett@thehutgroup.com</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402039620459" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0203 962 0459</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
       </td>
       
       <td style="text-align: right;">
-        <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-          <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-        </a>
-      </td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:marcus.conroy@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">marcus.conroy@thehutgroup.com</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241763" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1763</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-    </td>
-    
-    <td style="text-align: right;">
-    
-      <p>
-        <a href="https://bit.ly/3WSbWFj" target="_blank">
-          <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-        </a>
-      </p>
       
-      <p>
-        <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-        <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-        <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-      </p>
-    
-    </td>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-    
+        <p>
+          <a href="http://bit.ly/3iJNTJP" target="_blank">
+            <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+          </a>
+        </p>
+        
+        <p>
+          <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+          <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+          <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+        </p>
+      
+      </td>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+      
+      </tr>
+      
     </tr>
-    
-  </tr>
-  
-  </table>
-  
-  <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
-<table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-  
-  <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Marcus Conroy</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Lead</p>
-    </td>
-    
-    <td style="text-align: right;">
-      <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-        <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-      </a>
-    </td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-  <td>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:marcus.conroy@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">marcus.conroy@thehutgroup.com</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241763" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1763</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-  </td>
-  
-  <td style="text-align: right;">
-  
-    <p>
-      <a href="https://bit.ly/3WSbWFj" target="_blank">
-        <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-      </a>
-    </p>
-    
-    <p>
-      <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-      <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-      <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-    </p>
-  
-  </td>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-</tr>
 
-</table>
-  </textarea>
-  
-  <br /><br />
-  
-  <!-- ------------------------------------------------------------------------------- Stevie Howlett ------------------------------------------------------------------------------- -->
-  
-  <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-    
-    <tr style="padding: 0; margin: 0;">
+    </table>
+      </textarea>
+      
+      <br /><br />
+      
+      <!-- ------------------------------------------------------------------------------- Danielle Canning ------------------------------------------------------------------------------- -- >
+      
+      <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+        
+        <tr style="padding: 0; margin: 0;">
+          
+          <td>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Danielle Canning</p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
+          </td>
+          
+          <td style="text-align: right;">
+            <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+              <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+            </a>
+          </td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:danielle.canning51@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">danielle.canning51@thehutgroup.com</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241634" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1634</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
+        </td>
+        
+        <td style="text-align: right;">
+        
+          <p>
+            <a href="http://bit.ly/3iJNZRH" target="_blank">
+              <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+            </a>
+          </p>
+          
+          <p>
+            <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+            <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+            <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+          </p>
+        
+        </td>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+      </tr>
+      
+      </table>
+      
+      <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
+    <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+      
+      <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Danielle Canning</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
+        </td>
+        
+        <td style="text-align: right;">
+          <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+            <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+          </a>
+        </td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
       
       <td>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Stevie Howlett</p>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Director of Demand Generation</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:danielle.canning51@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">danielle.canning51@thehutgroup.com</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241634" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1634</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
       </td>
       
       <td style="text-align: right;">
-        <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-          <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-        </a>
-      </td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:stevie.howlett@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">stevie.howlett@thehutgroup.com</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402039620459" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0203 962 0459</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-    </td>
-    
-    <td style="text-align: right;">
-    
-      <p>
-        <a href="http://bit.ly/3iJNTJP" target="_blank">
-          <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-        </a>
-      </p>
       
-      <p>
-        <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-        <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-        <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-      </p>
-    
-    </td>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-    
+        <p>
+          <a href="http://bit.ly/3iJNZRH" target="_blank">
+            <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+          </a>
+        </p>
+        
+        <p>
+          <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+          <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+          <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+        </p>
+      
+      </td>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+      
+      </tr>
+      
     </tr>
-    
-  </tr>
-  
-  </table>
-  
-  <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
-<table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-  
-  <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Stevie Howlett</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Director of Demand Generation</p>
-    </td>
-    
-    <td style="text-align: right;">
-      <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-        <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-      </a>
-    </td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-  <td>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:stevie.howlett@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">stevie.howlett@thehutgroup.com</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402039620459" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0203 962 0459</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-  </td>
-  
-  <td style="text-align: right;">
-  
-    <p>
-      <a href="http://bit.ly/3iJNTJP" target="_blank">
-        <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-      </a>
-    </p>
-    
-    <p>
-      <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-      <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-      <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-    </p>
-  
-  </td>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-</tr>
 
-</table>
-  </textarea>
-  
-  <br /><br />
-  
-  <!-- ------------------------------------------------------------------------------- Danielle Canning ------------------------------------------------------------------------------- -->
-  
-  <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-    
-    <tr style="padding: 0; margin: 0;">
+    </table>
+      </textarea>
+      
+      <br /><br />
+      
+      <!-- ------------------------------------------------------------------------------- Raya Adiba ------------------------------------------------------------------------------- -- >
+      
+      <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+        
+        <tr style="padding: 0; margin: 0;">
+          
+          <td>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Raya Adiba</p>
+            <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
+          </td>
+          
+          <td style="text-align: right;">
+            <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+              <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+            </a>
+          </td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:raya.adiba@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">raya.adiba@thehutgroup.com</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402080163352" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 016 3352</a></p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
+        </td>
+        
+        <td style="text-align: right;">
+        
+          <p>
+            <a href="http://bit.ly/3Ha1xzb" target="_blank">
+              <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+            </a>
+          </p>
+          
+          <p>
+            <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+            <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+            <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+          </p>
+        
+        </td>
+        
+        <tr style="padding: 0; margin: 0;">
+        
+          <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+        
+        </tr>
+        
+      </tr>
+      
+      </table>
+      
+      <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
+    <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
+      
+      <tr style="padding: 0; margin: 0;">
+        
+        <td>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Raya Adiba</p>
+          <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
+        </td>
+        
+        <td style="text-align: right;">
+          <a href="https://www.ingenuitycloudservices.com/" target="_blank">
+            <img src="./logo-b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
+          </a>
+        </td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="./dashed-line-b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
+      
+      </tr>
+      
+      <tr style="padding: 0; margin: 0;">
       
       <td>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Danielle Canning</p>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:raya.adiba@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">raya.adiba@thehutgroup.com</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402080163352" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 016 3352</a></p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
+        <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
       </td>
       
       <td style="text-align: right;">
-        <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-          <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-        </a>
-      </td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:danielle.canning51@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">danielle.canning51@thehutgroup.com</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241634" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1634</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-    </td>
-    
-    <td style="text-align: right;">
-    
-      <p>
-        <a href="http://bit.ly/3iJNZRH" target="_blank">
-          <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-        </a>
-      </p>
       
-      <p>
-        <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-        <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-        <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-      </p>
-    
-    </td>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-    
+        <p>
+          <a href="http://bit.ly/3Ha1xzb" target="_blank">
+            <img src="./schedula-a-meeting-b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
+          </a>
+        </p>
+        
+        <p>
+          <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social-in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
+          <a href="https://twitter.com/THG_ICS" target="_blank"><img src="./social-tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
+          <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="./social-yt-b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
+        </p>
+      
+      </td>
+      
+      <tr style="padding: 0; margin: 0;">
+      
+        <td colspan="2"><img src="./dashed-line-b.png" style="width: 480px;" alt="" /></td>
+      
+      </tr>
+      
     </tr>
-    
-  </tr>
-  
-  </table>
-  
-  <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
-<table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-  
-  <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Danielle Canning</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
-    </td>
-    
-    <td style="text-align: right;">
-      <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-        <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-      </a>
-    </td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-  <td>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:danielle.canning51@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">danielle.canning51@thehutgroup.com</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004401615241634" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0161 524 1634</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-  </td>
-  
-  <td style="text-align: right;">
-  
-    <p>
-      <a href="http://bit.ly/3iJNZRH" target="_blank">
-        <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-      </a>
-    </p>
-    
-    <p>
-      <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-      <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-      <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-    </p>
-  
-  </td>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-</tr>
 
-</table>
-  </textarea>
-  
-  <br /><br />
-  
-  <!-- ------------------------------------------------------------------------------- Raya Adiba ------------------------------------------------------------------------------- -->
-  
-  <table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-    
-    <tr style="padding: 0; margin: 0;">
+    </table>
+      </textarea>
       
-      <td>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Raya Adiba</p>
-        <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
-      </td>
+      -->
       
-      <td style="text-align: right;">
-        <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-          <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-        </a>
-      </td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-    
-    </tr>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:raya.adiba@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">raya.adiba@thehutgroup.com</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402080163352" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 016 3352</a></p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-    </td>
-    
-    <td style="text-align: right;">
-    
-      <p>
-        <a href="http://bit.ly/3Ha1xzb" target="_blank">
-          <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-        </a>
-      </p>
-      
-      <p>
-        <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-        <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-        <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-      </p>
-    
-    </td>
-    
-    <tr style="padding: 0; margin: 0;">
-    
-      <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-    
-    </tr>
-    
-  </tr>
-  
-  </table>
-  
-  <textarea onClick="this.select();" style="width: 600px; height: 145px; position: absolute; margin-top: -145px; left: 560px;">
-<table cellspacing="0" cellpadding="0" border="0" style="width: 480px; background-color: #fff; padding: 10px; font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">
-  
-  <tr style="padding: 0; margin: 0;">
-    
-    <td>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">Raya Adiba</p>
-      <p style="font-family: 'Arial'; font-style: normal; font-weight: 700; font-size: 12px; line-height: 18px; color: #0006FD; margin: 0;">Sales Development Representative</p>
-    </td>
-    
-    <td style="text-align: right;">
-      <a href="https://www.ingenuitycloudservices.com/" target="_blank">
-        <img src="logo_b.png" style="height: 15px;" alt="THG Ingenuity Cloud Services" title="THG Ingenuity Cloud Services" />
-      </a>
-    </td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" height="1" style="padding: 10px 0; width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-  <td>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="mailto:raya.adiba@thehutgroup.com" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">raya.adiba@thehutgroup.com</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="tel:004402080163352" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">+44 0208 016 3352</a></p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;">THG Ingenuity Cloud Services</p>
-    <p style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;"><a href="https://www.ingenuitycloudservices.com/" style="font-family: 'Arial'; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; color: #161923; margin: 0;" target="_blank">www.ingenuitycloudservices.com</a></p>
-  </td>
-  
-  <td style="text-align: right;">
-  
-    <p>
-      <a href="http://bit.ly/3Ha1xzb" target="_blank">
-        <img src="schedula_a_meeting_b.png" style="padding: 10px 0 0 0; height: 24px;" alt="Schedula a meeting" title="Schedula a meeting" />
-      </a>
-    </p>
-    
-    <p>
-      <a href="https://www.linkedin.com/company/thg-ingenuity-cloud-services/" target="_blank"><img src="social_in.png" style="height: 24px;" alt="LikedIn" title="LikedIn" /></a> &nbsp; 
-      <a href="https://twitter.com/THG_ICS" target="_blank"><img src="social_tw.png" style="height: 24px;" alt="Twitter" title="Twitter" /></a> &nbsp; 
-      <a href="https://www.youtube.com/@ingenuitycloudservices5050" target="_blank"><img src="social_yt_b.png" style="height: 24px;" alt="Youtube" title="Youtube" /></a>
-    </p>
-  
-  </td>
-  
-  <tr style="padding: 0; margin: 0;">
-  
-    <td colspan="2"><img src="dashed_line_b.png" style="width: 480px;" alt="" /></td>
-  
-  </tr>
-  
-</tr>
+    </div>
 
-</table>
-  </textarea>
-  
-</div>
+  </body>
+</html>
